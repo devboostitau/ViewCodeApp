@@ -16,6 +16,10 @@
 		22865858250AF4A10063D0BE /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22865857250AF4A10063D0BE /* AppStyle.swift */; };
 		2286585B250AF4E60063D0BE /* UIColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2286585A250AF4E60063D0BE /* UIColor+RGB.swift */; };
 		2286585E250B002B0063D0BE /* WelcomeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2286585D250B002B0063D0BE /* WelcomeButton.swift */; };
+		22BC63A4250C304D009E84CA /* ViewCodeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC63A3250C304D009E84CA /* ViewCodeComponent.swift */; };
+		22BC63A6250C393B009E84CA /* HasCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC63A5250C393B009E84CA /* HasCodeView.swift */; };
+		22BC63AD250C4A06009E84CA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22BC63AF250C4A06009E84CA /* Localizable.strings */; };
+		22BC63B3250C4C75009E84CA /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC63B2250C4C75009E84CA /* Localization.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,14 @@
 		22865857250AF4A10063D0BE /* AppStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyle.swift; sourceTree = "<group>"; };
 		2286585A250AF4E60063D0BE /* UIColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGB.swift"; sourceTree = "<group>"; };
 		2286585D250B002B0063D0BE /* WelcomeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeButton.swift; sourceTree = "<group>"; };
+		22BC63A3250C304D009E84CA /* ViewCodeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCodeComponent.swift; sourceTree = "<group>"; };
+		22BC63A5250C393B009E84CA /* HasCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasCodeView.swift; sourceTree = "<group>"; };
+		22BC63AB250C49CB009E84CA /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		22BC63AC250C49DD009E84CA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		22BC63AE250C4A06009E84CA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22BC63B0250C4A0F009E84CA /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		22BC63B1250C4A10009E84CA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22BC63B2250C4C75009E84CA /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +81,7 @@
 				22865842250ADD890063D0BE /* Assets.xcassets */,
 				22865844250ADD890063D0BE /* LaunchScreen.storyboard */,
 				22865847250ADD890063D0BE /* Info.plist */,
+				22BC63AF250C4A06009E84CA /* Localizable.strings */,
 			);
 			path = ViewCodeApp;
 			sourceTree = "<group>";
@@ -102,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				22865857250AF4A10063D0BE /* AppStyle.swift */,
+				22BC63A2250C3036009E84CA /* Model */,
 				22865859250AF4DB0063D0BE /* Extensions */,
 				22865854250AE3440063D0BE /* Protocol */,
 			);
@@ -112,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				22865855250AE35C0063D0BE /* CodeView.swift */,
+				22BC63A5250C393B009E84CA /* HasCodeView.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -130,6 +145,15 @@
 				2286585D250B002B0063D0BE /* WelcomeButton.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		22BC63A2250C3036009E84CA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				22BC63A3250C304D009E84CA /* ViewCodeComponent.swift */,
+				22BC63B2250C4C75009E84CA /* Localization.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +198,8 @@
 			knownRegions = (
 				en,
 				Base,
+				"pt-BR",
+				es,
 			);
 			mainGroup = 2286582D250ADD880063D0BE;
 			productRefGroup = 22865837250ADD880063D0BE /* Products */;
@@ -190,6 +216,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22BC63AD250C4A06009E84CA /* Localizable.strings in Resources */,
 				22865846250ADD890063D0BE /* LaunchScreen.storyboard in Resources */,
 				22865843250ADD890063D0BE /* Assets.xcassets in Resources */,
 			);
@@ -205,10 +232,13 @@
 				2286583E250ADD880063D0BE /* WelcomeViewController.swift in Sources */,
 				2286585B250AF4E60063D0BE /* UIColor+RGB.swift in Sources */,
 				22865858250AF4A10063D0BE /* AppStyle.swift in Sources */,
+				22BC63A4250C304D009E84CA /* ViewCodeComponent.swift in Sources */,
 				22865851250ADF270063D0BE /* WelcomeView.swift in Sources */,
 				2286583A250ADD880063D0BE /* AppDelegate.swift in Sources */,
+				22BC63B3250C4C75009E84CA /* Localization.swift in Sources */,
 				22865856250AE35C0063D0BE /* CodeView.swift in Sources */,
 				2286585E250B002B0063D0BE /* WelcomeButton.swift in Sources */,
+				22BC63A6250C393B009E84CA /* HasCodeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,8 +249,20 @@
 			isa = PBXVariantGroup;
 			children = (
 				22865845250ADD890063D0BE /* Base */,
+				22BC63AB250C49CB009E84CA /* pt-BR */,
+				22BC63AC250C49DD009E84CA /* es */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		22BC63AF250C4A06009E84CA /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22BC63AE250C4A06009E84CA /* en */,
+				22BC63B0250C4A0F009E84CA /* pt-BR */,
+				22BC63B1250C4A10009E84CA /* es */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -230,6 +272,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -290,6 +333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  ViewCodeApp
+
+  Created by Eric Alves Brito on 11/09/20.
+  Copyright © 2020 DevBoost. All rights reserved.
+*/
+"WELCOME_TEXT" = "Welcome!";
+"MAIN_TEXT" = "Let's workout? Here you can create the perfect trainning!";
+"LOGIN_BUTTON_TEXT" = "Login";
+"SIGNUP_BUTTON_TEXT" = "Sign Up";
+"SOCIAL_MEDIA_TEXT" = "Or using social media";
+"PHONE_TEXT" = "Phone";

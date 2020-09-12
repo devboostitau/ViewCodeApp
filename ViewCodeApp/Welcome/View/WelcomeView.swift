@@ -9,15 +9,21 @@
 import UIKit
 
 protocol WelcomeViewDelegate: AnyObject {
-    func loginButtonTapped()
+    func loginButtonTapped(withPhone: String)
     func signUpButtonTapped()
     func facebookButtonTapped()
     func googleButtonTapped()
 }
 
+enum CodeViewState {
+    case start, animating, finish
+}
+
+
 class WelcomeView: UIView, CodeView {
     // MARK: - Properties
     weak var delegate: WelcomeViewDelegate?
+    var state: CodeViewState = .start
     
     let contentView: UIView = {
         let contentView = UIView(frame: .zero)
@@ -28,19 +34,22 @@ class WelcomeView: UIView, CodeView {
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.keyboardDismissMode = .interactive
         return scrollView
     }()
     
-    let mainImage: UIImageView = {
+    @ViewCodeComponent
+    var mainImage: UIImageView = {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "home"))
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.text = "Bem-Vindo"
+        label.text = Localization.welcomeText
         label.textAlignment = .center
         label.font = .title
         label.textColor = .title
@@ -51,7 +60,7 @@ class WelcomeView: UIView, CodeView {
     
     let bodyLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.text = "Vamos malhar? Aqui você pode construir sua rotina perfeita de treinos!"
+        label.text = Localization.mainText
         label.textAlignment = .center
         label.font = .body
         label.textColor = .body
@@ -62,7 +71,7 @@ class WelcomeView: UIView, CodeView {
     
     let phoneTextField: UITextField = {
         let textField = UITextField(frame: .zero)
-        textField.placeholder = "Telefone"
+        textField.placeholder = Localization.phoneText
         textField.borderStyle = .roundedRect
         textField.keyboardType = .phonePad
         textField.textAlignment = .center
@@ -80,8 +89,51 @@ class WelcomeView: UIView, CodeView {
         return stackView
     }()
     
-    let loginButton = WelcomeButton(style: .main, title: "Entrar")
-    let signUpButton = WelcomeButton(style: .secondary, title: "Registrar")
+    let loginButton = WelcomeButton(style: .main, title: Localization.loginButtonText)
+    let signUpButton = WelcomeButton(style: .secondary, title: Localization.signUpButtonText)
+    
+    let socialStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.alignment = .center
+        stackView.spacing = Margin.horizontalSmall
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackView
+    }()
+    
+    let facebookButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.setBackgroundImage(#imageLiteral(resourceName: "facebook"), for: .normal)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let googleButton: UIButton = {
+        let button = UIButton(frame: .zero)
+        button.setBackgroundImage(#imageLiteral(resourceName: "google"), for: .normal)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 20
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let footerLabel: UILabel = {
+        let label = UILabel()
+        label.text = Localization.socialMediaText
+        label.textAlignment = .center
+        label.font = .body
+        label.textColor = .body
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    // MARK: - Constraints
+    var imageHeightConstraint: NSLayoutConstraint?
     
     // MARK: - Inits
     init(delegate: WelcomeViewDelegate) {
@@ -103,6 +155,13 @@ class WelcomeView: UIView, CodeView {
         contentView.addSubview(titleLabel)
         contentView.addSubview(bodyLabel)
         contentView.addSubview(phoneTextField)
+        contentView.addSubview(buttonsStackView)
+        buttonsStackView.addArrangedSubview(loginButton)
+        buttonsStackView.addArrangedSubview(signUpButton)
+        contentView.addSubview(socialStackView)
+        socialStackView.addArrangedSubview(facebookButton)
+        socialStackView.addArrangedSubview(googleButton)
+        contentView.addSubview(footerLabel)
     }
     
     func setupConstraints() {
@@ -141,7 +200,8 @@ class WelcomeView: UIView, CodeView {
         mainImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Margin.verticalVeryLarge).isActive = true
         mainImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Margin.horizontal).isActive = true
         mainImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Margin.horizontal).isActive = true
-        mainImage.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3).isActive = true
+        imageHeightConstraint = mainImage.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.0)
+        imageHeightConstraint?.isActive = true
         
         //TitleLabel
         titleLabel.topAnchor.constraint(equalTo: mainImage.bottomAnchor, constant: Margin.verticalVeryLarge).isActive = true
@@ -158,9 +218,66 @@ class WelcomeView: UIView, CodeView {
         phoneTextField.leadingAnchor.constraint(equalTo: bodyLabel.leadingAnchor).isActive = true
         phoneTextField.trailingAnchor.constraint(equalTo: bodyLabel.trailingAnchor).isActive = true
         
+        //ButtonStackView
+        buttonsStackView.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: Margin.verticalNormal).isActive = true
+        buttonsStackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        //Login/Signup Buttons
+        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        loginButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        signUpButton.heightAnchor.constraint(equalTo: loginButton.heightAnchor, multiplier: 1.0).isActive = true
+        
+        //Social Stackview
+        socialStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Margin.verticalNormal).isActive = true
+        socialStackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        //Social Buttons
+        facebookButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        facebookButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        googleButton.heightAnchor.constraint(equalTo: facebookButton.heightAnchor, multiplier: 1.0).isActive = true
+        
+        //Footer Label
+        footerLabel.bottomAnchor.constraint(equalTo: socialStackView.topAnchor, constant: -Margin.verticalNormal).isActive = true
+        footerLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     }
     
     func setupExtraConfigurations() {
         backgroundColor = .view
+        loginButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        signUpButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        facebookButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        googleButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func buttonTapped(sender: UIButton) {
+        switch sender {
+        case loginButton:
+            delegate?.loginButtonTapped(withPhone: phoneTextField.text!)
+        case signUpButton:
+            delegate?.signUpButtonTapped()
+        case facebookButton:
+            delegate?.facebookButtonTapped()
+        case googleButton:
+            delegate?.googleButtonTapped()
+        default:
+            break
+        }
+    }
+    
+    func animate() {
+        if state == .start {
+            state = .animating
+            imageHeightConstraint?.isActive = false
+            imageHeightConstraint = mainImage.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3)
+            imageHeightConstraint?.isActive = true
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+                //self.mainImage.transform = .init(rotationAngle: .pi)
+                self.layoutIfNeeded()
+            }) { (success) in
+                print("Animação concluída?", success)
+                self.state = .finish
+            }
+        }
     }
 }
